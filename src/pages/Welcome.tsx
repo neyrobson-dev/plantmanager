@@ -1,5 +1,14 @@
-import React from 'react';
-import { SafeAreaView, View, Text, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+    SafeAreaView,
+    View,
+    Text,
+    Image,
+    TouchableOpacity,
+    StyleSheet,
+    Dimensions 
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/core';
 import { Feather } from '@expo/vector-icons'; 
 
@@ -9,6 +18,16 @@ import fonts from '../styles/fonts';
 
 export function Welcome() {
     const navigation = useNavigation();
+
+    // useEffect(() => {
+    //     async function loadUserName() {
+    //         const user = await AsyncStorage.getItem('@plantmanager:user');
+    //         if (!!user)
+    //             navigation.navigate('PlantSelect');
+    //     }
+
+    //     loadUserName();
+    // }, []);
 
     function handleStart() {
         navigation.navigate('UserIdentification');

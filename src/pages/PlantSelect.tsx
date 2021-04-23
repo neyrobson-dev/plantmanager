@@ -7,11 +7,13 @@ import {
     FlatList,
     ActivityIndicator
 } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
 
 import { Header } from '../components/Header';
 import { EnvironmentButton } from '../components/EnvironmentButton';
 import { PlantCardPrimary } from '../components/PlantCardPrimary';
 import { Load } from '../components/Load';
+import { PlantProps } from '../libs/storage';
 
 import colors from '../styles/colors';
 import fonts from '../styles/fonts';
@@ -22,20 +24,8 @@ interface EnvironmentProps {
     title: string;
 }
 
-interface PlantProps {
-    id: string;
-    name: string;
-    about: string;
-    water_tips: string;
-    photo: string;
-    environments: [string];
-    frequency: {
-        times: number;
-        repeat_every: string;
-    }
-}
-
 export function PlantSelect() {
+    const navigation = useNavigation();
     const [environments, setEnvironments] = useState<EnvironmentProps[]>([]);
     const [plants, setPlants] = useState<PlantProps[]>([]);
     const [filteredPlants, setFilteredPlants] = useState<PlantProps[]>([]);
@@ -92,6 +82,10 @@ export function PlantSelect() {
         setFilteredPlants(filtered);
     }
 
+    function handlePlantSelect(plant: PlantProps) {
+        navigation.navigate('PlantSave', { plant });
+    }
+
     function handleFetchMore(distance: number) {
         if (distance < 1)
             return;
@@ -134,7 +128,10 @@ export function PlantSelect() {
                     data={filteredPlants}
                     keyExtractor={(item) => String(item.id)}
                     renderItem={({ item }) => (
-                        <PlantCardPrimary data={item} />
+                        <PlantCardPrimary
+                            data={item}
+                            onPress={() => handlePlantSelect(item)}
+                        />
                     )}
                     showsVerticalScrollIndicator={false}
                     numColumns={2}
